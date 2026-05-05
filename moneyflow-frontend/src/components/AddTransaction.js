@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../api";
+import API from "../services/api";
 
 export default function AddTransaction({ refresh }) {
     const [amount,setAmount] = useState("");

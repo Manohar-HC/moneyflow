@@ -1,18 +1,33 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { registerUser } from "../services/authService";
 
-export default function Register(){
-    const nav = useNavigate();
+function Register() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    return(
-        <div className="auth-container">
-            <div className="auth-box">
-                <h2>Create Account</h2>
+    const handleRegister = async () => {
+        try {
+            await registerUser({ email, password });
+            alert("Registered Successfully");
+            window.location.href = "/";
+        } catch (err) {
+            alert("Register Failed");
+        }
+    };
 
-                <input placeholder="Email"/>
-                <input placeholder="Password"/>
+    return (
+        <div style={{ padding: 40 }}>
+            <h2>Register</h2>
 
-                <button onClick={()=>nav("/")}>Register</button>
-            </div>
+            <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <br /><br />
+
+            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+            <br /><br />
+
+            <button onClick={handleRegister}>Register</button>
         </div>
     );
 }
+
+export default Register;

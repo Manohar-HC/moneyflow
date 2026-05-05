@@ -1,30 +1,26 @@
 package com.moneymanager.controller;
 
 import com.moneymanager.model.User;
-import com.moneymanager.security.JwtUtil;
-import com.moneymanager.service.UserService;
+import com.moneymanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
-@CrossOrigin
+@RequestMapping("/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepo;
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
-        return userService.register(user);
+        return userRepo.save(user);
     }
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        User u = userService.login(user.getEmail(), user.getPassword());
-        return jwtUtil.generateToken(u.getEmail()); // 🔥 return token
+    public User login(@RequestBody User user) {
+        return userRepo.findByEmailAndPassword(user.getEmail(), user.getPassword())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
     }
 }
