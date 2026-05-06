@@ -59,4 +59,6 @@ function Dashboard() {
 
     const COLORS = ["#6c63ff", "#00c896"];
 
-    export default Dashboard;
+}
+
+export default Dashboard;
