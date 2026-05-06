@@ -1,53 +1,44 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import API from "../services/api";
+import { registerUser, loginUser } from "../services/authService";
 
-function Login() {
+export default function Login({ setUser }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
 
     const register = async () => {
         try {
-            await API.post("/auth/register", { email, password });
+            await registerUser({ email, password });
             alert("Registered successfully");
-        } catch (err) {
-            alert("Error registering");
+        } catch {
+            alert("Register failed");
         }
     };
 
     const login = async () => {
         try {
-            const res = await API.post("/auth/login", { email, password });
-            localStorage.setItem("userId", res.data.id);
-            navigate("/dashboard");
-        } catch (err) {
+            const res = await loginUser({ email, password });
+            setUser(res.data);
+        } catch {
             alert("Login failed");
         }
     };
 
     return (
-        <div className="container">
-            <div className="card">
-                <h2>🔐 Login</h2>
-
-                <input
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    placeholder="Password"
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                <div className="btn-group">
-                    <button onClick={register}>Register</button>
-                    <button onClick={login}>Login</button>
-                </div>
-            </div>
+        <div style={styles.container}>
+            <h2>Login</h2>
+            <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
+            <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+            <button onClick={register}>Register</button>
+            <button onClick={login}>Login</button>
         </div>
     );
 }
 
-export default Login;
+const styles = {
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        width: "300px",
+        margin: "100px auto"
+    }
+};

@@ -1,17 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import "./App.css";
 
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-        </Router>
-    );
+    const [user, setUser] = useState(null);
+
+    return user ? <Dashboard /> : <Login setUser={setUser} />;
 }
 
 export default App;

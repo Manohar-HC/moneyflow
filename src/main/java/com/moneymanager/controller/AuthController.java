@@ -20,7 +20,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public User login(@RequestBody User user) {
-        return userRepo.findByEmailAndPassword(user.getEmail(), user.getPassword())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        return userRepo.findByEmailAndPassword(
+                user.getEmail(),
+                user.getPassword()
+        ).orElseThrow(() -> new RuntimeException("Invalid credentials"));
     }
 }

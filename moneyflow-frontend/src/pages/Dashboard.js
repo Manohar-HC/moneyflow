@@ -1,53 +1,41 @@
-import { useEffect, useState } from "react";
-import API from "../services/api";
+import { useState, useEffect } from "react";
+import { addTransaction, getTransactions } from "../services/transactionService";
 
-function Dashboard() {
+export default function Dashboard() {
     const [amount, setAmount] = useState("");
     const [transactions, setTransactions] = useState([]);
-    const userId = localStorage.getItem("userId");
 
-    const loadTransactions = async () => {
-        const res = await API.get(`/transactions/${userId}`);
+    const load = async () => {
+        const res = await getTransactions();
         setTransactions(res.data);
     };
 
     useEffect(() => {
-        loadTransactions();
+        load();
     }, []);
 
-    const addTransaction = async () => {
-        await API.post("/transactions/add", {
-            userId,
-            amount,
-        });
+    const add = async () => {
+        await addTransaction({ amount });
         setAmount("");
-        loadTransactions();
+        load();
     };
 
     return (
-        <div className="container">
-            <h1>💰 Dashboard</h1>
+        <div style={{ width: "500px", margin: "50px auto" }}>
+            <h2>Dashboard</h2>
 
-            <div className="card">
-                <h3>Add Transaction</h3>
-                <input
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
-                <button onClick={addTransaction}>Add</button>
-            </div>
+            <input
+                placeholder="Amount"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+            />
+            <button onClick={add}>Add</button>
 
-            <div className="card">
-                <h3>Transactions</h3>
-                <ul className="list">
-                    {transactions.map((t) => (
-                        <li key={t.id}>₹ {t.amount}</li>
-                    ))}
-                </ul>
-            </div>
+            <ul>
+                {transactions.map(t => (
+                    <li key={t.id}>{t.amount}</li>
+                ))}
+            </ul>
         </div>
     );
 }
-
-export default Dashboard;
