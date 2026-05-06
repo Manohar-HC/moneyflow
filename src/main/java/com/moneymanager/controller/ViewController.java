@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewController {
 
-    @GetMapping("/")
+    @GetMapping(value = "/")
     public String index() {
-        return "forward:/build/index.html";
+        return "forward:/index.html";
     }
 }
