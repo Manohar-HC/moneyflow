@@ -1,0 +1,75 @@
+body {
+    background: #101935;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.card h3 {
+    margin-top: 10px;
+    color: #ccc;
+}
+
+.card p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.add-box {
+    margin-top: 40px;
+    display: flex;
+    gap: 15px;
+}
+
+.add-box input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #161f45;
+    color: white;
+}
+
+.add-box button {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    background: #6c63ff;
+    color: white;
+    cursor: pointer;
+}
+
+.chart-box {
+    margin-top: 50px;
+    background: #101935;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.transaction-box {
+    margin-top: 40px;
+    background: #101935;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.transaction {
+    background: #161f45;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .add-box {
+        flex-direction: column;
+    }
+}
