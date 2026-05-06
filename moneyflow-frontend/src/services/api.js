@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: "https://moneyflow-production-74de.up.railway.app",
+const API = axios.create({
+    baseURL: "https://moneyflow-production-74de.up.railway.app/api",
 });
 
-export default api;
+export default API;

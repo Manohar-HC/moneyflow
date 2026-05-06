@@ -1,64 +1,103 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+
 import {
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    ResponsiveContainer,
     LineChart,
     Line,
     XAxis,
     YAxis,
     CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    Cell,
 } from "recharts";
 
 import {
     FaWallet,
     FaArrowUp,
     FaArrowDown,
-    FaMoneyBill,
+    FaTrash,
 } from "react-icons/fa";
 
 import "./Dashboard.css";
 
 function Dashboard() {
+
+    const API = "https://moneyflow-production-74de.up.railway.app/api/transactions";
+
     const [transactions, setTransactions] = useState([]);
 
-    const [text, setText] = useState("");
+    const [title, setTitle] = useState("");
     const [amount, setAmount] = useState("");
+    const [type, setType] = useState("income");
+    const [category, setCategory] = useState("Salary");
 
-    const addTransaction = () => {
-        if (!text || !amount) return;
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
 
-        const newTransaction = {
-            id: Date.now(),
-            text,
-            amount: parseFloat(amount),
-            type: amount > 0 ? "income" : "expense",
-        };
+    const fetchTransactions = async () => {
+        try {
+            const res = await axios.get(API);
+            setTransactions(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-        setTransactions([...transactions, newTransaction]);
-        setText("");
-        setAmount("");
+    const addTransaction = async () => {
+        try {
+
+            if (!title || !amount) {
+                return;
+            }
+
+            const newTransaction = {
+                title,
+                amount: parseFloat(amount),
+                type,
+                category,
+            };
+
+            await axios.post(API, newTransaction);
+            alert("Saved Successfully");
+
+            fetchTransactions();
+
+            setTitle("");
+            setAmount("");
+
+            alert("Transaction Added!");
+
+        } catch (error) {
+            console.log(error);
+            alert("Error adding transaction");
+        }
+    };
+
+    const deleteTransaction = async (id) => {
+        try {
+
+            await axios.delete(`${API}/${id}`);
+
+            fetchTransactions();
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const income = transactions
-        .filter((t) => t.amount > 0)
+        .filter((t) => t.type === "income")
         .reduce((acc, t) => acc + t.amount, 0);
 
     const expense = transactions
-        .filter((t) => t.amount < 0)
-        .reduce((acc, t) => acc + Math.abs(t.amount), 0);
+        .filter((t) => t.type === "expense")
+        .reduce((acc, t) => acc + t.amount, 0);
 
     const balance = income - expense;
-
-    const chartData = [
-        { name: "Jan", value: 4000 },
-        { name: "Feb", value: 3000 },
-        { name: "Mar", value: 5000 },
-        { name: "Apr", value: 4000 },
-        { name: "May", value: 7000 },
-    ];
 
     const pieData = [
         { name: "Income", value: income },
@@ -67,128 +106,174 @@ function Dashboard() {
 
     const COLORS = ["#6C63FF", "#FF6584"];
 
+    const chartData = [
+        { month: "Jan", value: income * 0.3 },
+        { month: "Feb", value: income * 0.5 },
+        { month: "Mar", value: income * 0.7 },
+        { month: "Apr", value: income * 0.9 },
+        { month: "May", value: balance },
+    ];
+
     return (
         <div className="dashboard">
-            <aside className="sidebar">
-                <h2>MoneyFlow</h2>
 
-                <ul>
-                    <li>Dashboard</li>
-                    <li>Analytics</li>
-                    <li>Transactions</li>
-                    <li>Profile</li>
-                </ul>
-            </aside>
+            <h1 className="heading">MoneyFlow Dashboard</h1>
 
-            <main className="main-content">
-                <h1>Financial Dashboard</h1>
+            <div className="cards">
 
-                <div className="cards">
-                    <div className="card">
-                        <FaWallet className="icon" />
-                        <h3>Balance</h3>
-                        <p>₹ {balance}</p>
-                    </div>
-
-                    <div className="card income">
-                        <FaArrowUp className="icon" />
-                        <h3>Income</h3>
-                        <p>₹ {income}</p>
-                    </div>
-
-                    <div className="card expense">
-                        <FaArrowDown className="icon" />
-                        <h3>Expense</h3>
-                        <p>₹ {expense}</p>
-                    </div>
-
-                    <div className="card savings">
-                        <FaMoneyBill className="icon" />
-                        <h3>Savings</h3>
-                        <p>₹ {balance}</p>
-                    </div>
+                <div className="card">
+                    <FaWallet className="icon" />
+                    <h3>Balance</h3>
+                    <p>₹ {balance}</p>
                 </div>
 
-                <div className="charts">
-                    <div className="chart-box">
-                        <h2>Monthly Overview</h2>
-
-                        <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Line
-                                    type="monotone"
-                                    dataKey="value"
-                                    stroke="#6C63FF"
-                                    strokeWidth={3}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </div>
-
-                    <div className="chart-box">
-                        <h2>Income vs Expense</h2>
-
-                        <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie
-                                    data={pieData}
-                                    cx="50%"
-                                    cy="50%"
-                                    outerRadius={100}
-                                    dataKey="value"
-                                    label
-                                >
-                                    {pieData.map((entry, index) => (
-                                        <Cell
-                                            key={index}
-                                            fill={COLORS[index % COLORS.length]}
-                                        />
-                                    ))}
-                                </Pie>
-
-                                <Tooltip />
-                            </PieChart>
-                        </ResponsiveContainer>
-                    </div>
+                <div className="card income">
+                    <FaArrowUp className="icon" />
+                    <h3>Income</h3>
+                    <p>₹ {income}</p>
                 </div>
 
-                <div className="transaction-box">
-                    <h2>Add Transaction</h2>
-
-                    <div className="form">
-                        <input
-                            type="text"
-                            placeholder="Transaction Name"
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                        />
-
-                        <input
-                            type="number"
-                            placeholder="Amount (+income, -expense)"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                        />
-
-                        <button onClick={addTransaction}>Add</button>
-                    </div>
-
-                    <ul className="transaction-list">
-                        {transactions.map((t) => (
-                            <li key={t.id} className={t.amount > 0 ? "plus" : "minus"}>
-                                {t.text}
-                                <span>
-                  {t.amount > 0 ? "+" : "-"}₹ {Math.abs(t.amount)}
-                </span>
-                            </li>
-                        ))}
-                    </ul>
+                <div className="card expense">
+                    <FaArrowDown className="icon" />
+                    <h3>Expense</h3>
+                    <p>₹ {expense}</p>
                 </div>
-            </main>
+
+            </div>
+
+            <div className="chart-container">
+
+                <div className="chart-box">
+                    <h2>Income vs Expense</h2>
+
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+
+                            <Pie
+                                data={pieData}
+                                dataKey="value"
+                                outerRadius={100}
+                                label
+                            >
+
+                                {pieData.map((entry, index) => (
+                                    <Cell
+                                        key={index}
+                                        fill={COLORS[index % COLORS.length]}
+                                    />
+                                ))}
+
+                            </Pie>
+
+                            <Tooltip />
+
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+
+                <div className="chart-box">
+                    <h2>Monthly Overview</h2>
+
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={chartData}>
+
+                            <CartesianGrid strokeDasharray="3 3" />
+
+                            <XAxis dataKey="month" />
+
+                            <YAxis />
+
+                            <Tooltip />
+
+                            <Line
+                                type="monotone"
+                                dataKey="value"
+                                stroke="#6C63FF"
+                                strokeWidth={3}
+                            />
+
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
+
+            </div>
+
+            <div className="form-box">
+
+                <h2>Add Transaction</h2>
+
+                <input
+                    type="text"
+                    placeholder="Transaction Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+
+                <input
+                    type="number"
+                    placeholder="Amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                />
+
+                <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                >
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                >
+                    <option>Salary</option>
+                    <option>Rent</option>
+                    <option>Shopping</option>
+                    <option>Food</option>
+                    <option>Investment</option>
+                </select>
+
+                <button onClick={addTransaction}>
+                    Add Transaction
+                </button>
+
+            </div>
+
+            <div className="transaction-box">
+
+                <h2>Transactions</h2>
+
+                {transactions.map((t) => (
+                    <div
+                        key={t.id}
+                        className={`transaction ${t.type}`}
+                    >
+
+                        <div>
+                            <h3>{t.title}</h3>
+                            <p>{t.category}</p>
+                        </div>
+
+                        <div className="right">
+
+                            <h3>
+                                {t.type === "income" ? "+" : "-"}₹ {t.amount}
+                            </h3>
+
+                            <FaTrash
+                                className="delete"
+                                onClick={() => deleteTransaction(t.id)}
+                            />
+
+                        </div>
+
+                    </div>
+                ))}
+
+            </div>
+
         </div>
     );
 }

@@ -2,26 +2,33 @@ package com.moneymanager.controller;
 
 import com.moneymanager.model.Transaction;
 import com.moneymanager.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/transactions")
+@CrossOrigin("*")
 public class TransactionController {
 
-    @Autowired
-    private TransactionRepository repo;
+    private final TransactionRepository repository;
 
-    @PostMapping
-    public Transaction add(@RequestBody Transaction t) {
-        return repo.save(t);
+    public TransactionController(TransactionRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping
-    public List<Transaction> getAll() {
-        return repo.findAll();
+    public List<Transaction> getAllTransactions() {
+        return repository.findAll();
+    }
+
+    @PostMapping
+    public Transaction addTransaction(@RequestBody Transaction transaction) {
+        return repository.save(transaction);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTransaction(@PathVariable Long id) {
+        repository.deleteById(id);
     }
 }
