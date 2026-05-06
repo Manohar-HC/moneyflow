@@ -1,64 +1,67 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {
-    PieChart,
-    Pie,
-    Cell,
-    Tooltip,
-    ResponsiveContainer,
-} from "recharts";
-import {
-    FaWallet,
-    FaArrowUp,
-    FaArrowDown,
-    FaMoneyBill,
-} from "react-icons/fa";
-import "./Dashboard.css";
-
-const API = "https://moneyflow-production-74de.up.railway.app";
+import React, { useState } from "react";
 
 function Dashboard() {
-    const [amount, setAmount] = useState("");
     const [transactions, setTransactions] = useState([]);
+    const [amount, setAmount] = useState("");
 
-    const fetchTransactions = async () => {
-        try {
-            const res = await axios.get(`${API}/transactions`);
-            setTransactions(res.data);
-        } catch (e) {
-            console.log(e);
-        }
+    const addTransaction = () => {
+        if (!amount) return;
+
+        setTransactions([...transactions, amount]);
+        setAmount("");
     };
 
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
+    return (
+        <div
+            style={{
+                background: "#071133",
+                minHeight: "100vh",
+                color: "white",
+                padding: "40px",
+                fontFamily: "Arial",
+            }}
+        >
+            <h1>MoneyFlow Dashboard</h1>
 
-    const addTransaction = async () => {
-        try {
-            await axios.post(`${API}/transactions`, {
-                amount,
-            });
+            <div style={{ marginTop: "20px" }}>
+                <input
+                    type="number"
+                    placeholder="Enter amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    style={{
+                        padding: "10px",
+                        width: "250px",
+                        borderRadius: "8px",
+                        border: "none",
+                        marginRight: "10px",
+                    }}
+                />
 
-            setAmount("");
-            fetchTransactions();
-        } catch (e) {
-            alert("Failed");
-        }
-    };
+                <button
+                    onClick={addTransaction}
+                    style={{
+                        padding: "10px 20px",
+                        background: "#6c63ff",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                    }}
+                >
+                    Add
+                </button>
+            </div>
 
-    const total = transactions.reduce(
-        (acc, item) => acc + Number(item.amount),
-        0
+            <ul style={{ marginTop: "30px" }}>
+                {transactions.map((item, index) => (
+                    <li key={index} style={{ marginBottom: "10px" }}>
+                        ₹ {item}
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
-
-    const chartData = [
-        { name: "Expenses", value: total },
-        { name: "Savings", value: total / 2 },
-    ];
-
-    const COLORS = ["#6c63ff", "#00c896"];
-
 }
 
 export default Dashboard;
