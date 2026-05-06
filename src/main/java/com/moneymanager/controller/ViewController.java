@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ViewController {
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = {"/", "/login", "/dashboard"})
     public String index() {
-        return "forward:/build/index.html";
+        return "forward:/index.html";
     }
 }
