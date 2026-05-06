@@ -5,6 +5,8 @@ import com.moneymanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
@@ -21,9 +23,14 @@ public class AuthController {
     @PostMapping("/login")
     public User login(@RequestBody User user) {
 
-        return userRepo.findByEmailAndPassword(
-                user.getEmail(),
-                user.getPassword()
-        ).orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        Optional<User> foundUser =
+                userRepo.findByEmailAndPassword(
+                        user.getEmail(),
+                        user.getPassword()
+                );
+
+        return foundUser.orElseThrow(
+                () -> new RuntimeException("Invalid credentials")
+        );
     }
 }
