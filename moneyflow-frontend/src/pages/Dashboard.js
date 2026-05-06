@@ -55,9 +55,7 @@ function Dashboard() {
 
             <ul style={{ marginTop: "30px" }}>
                 {transactions.map((item, index) => (
-                    <li key={index} style={{ marginBottom: "10px" }}>
-                        ₹ {item}
-                    </li>
+                    <li key={index}>₹ {item}</li>
                 ))}
             </ul>
         </div>
