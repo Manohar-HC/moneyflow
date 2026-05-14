@@ -50,29 +50,33 @@ function Dashboard() {
     const addTransaction = async () => {
         try {
 
-            if (!title || !amount) {
-                return;
-            }
-
             const newTransaction = {
                 title,
                 amount: parseFloat(amount),
                 type,
-                category,
+                category
             };
 
+            console.log("Sending:", newTransaction);
+
             await axios.post(API, newTransaction);
-            alert("Saved Successfully");
+
+            alert("Transaction Added");
 
             fetchTransactions();
 
             setTitle("");
             setAmount("");
 
-            alert("Transaction Added!");
-
         } catch (error) {
+
             console.log(error);
+
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+            }
+
             alert("Error adding transaction");
         }
     };
