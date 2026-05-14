@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
-
+const REGISTER_API = "https://moneyflow-production-74de.up.railway.app/api/auth/register";
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
