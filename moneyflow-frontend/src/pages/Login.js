@@ -3,9 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const LOGIN_API = "https://moneyflow-production-74de.up.railway.app/api/auth/login";
+const API = "https://moneyflow-production-74de.up.railway.app/api/auth";
 
 function Login() {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -13,37 +14,54 @@ function Login() {
     const navigate = useNavigate();
 
     const register = async () => {
+
         try {
-            await axios.post(`${API}/auth/register`, {
+
+            await axios.post(`${API}/register`, {
                 name,
                 email,
                 password,
             });
 
             alert("Registered Successfully");
+
         } catch (e) {
+
+            console.log(e);
             alert("Registration Failed");
+
         }
     };
 
     const login = async () => {
+
         try {
-            await axios.post(`${API}/auth/login`, {
+
+            await axios.post(`${API}/login`, {
                 email,
                 password,
             });
 
             localStorage.setItem("user", email);
+
             navigate("/dashboard");
+
         } catch (e) {
+
+            console.log(e);
             alert("Login Failed");
+
         }
     };
 
     return (
+
         <div className="login-page">
+
             <div className="login-card">
+
                 <h1>MoneyFlow</h1>
+
                 <p>Smart Finance Management</p>
 
                 <input
@@ -64,9 +82,16 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <button onClick={register}>Register</button>
-                <button onClick={login}>Login</button>
+                <button onClick={register}>
+                    Register
+                </button>
+
+                <button onClick={login}>
+                    Login
+                </button>
+
             </div>
+
         </div>
     );
 }
