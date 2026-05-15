@@ -39,6 +39,7 @@ function Dashboard() {
     }, []);
 
     const fetchTransactions = async () => {
+
         try {
 
             const res = await axios.get(API);
@@ -47,23 +48,40 @@ function Dashboard() {
 
         } catch (error) {
 
-            console.log(error);
+            console.log("GET ERROR:", error);
 
         }
     };
 
     const addTransaction = async () => {
 
+        if (!title || !amount) {
+            alert("Please fill all fields");
+            return;
+        }
+
         try {
 
-            const newTransaction = {
+            const transactionData = {
                 title: title,
                 amount: parseFloat(amount),
                 type: type,
-                category: category
+                category: category,
             };
 
-            await axios.post(API, newTransaction);
+            console.log("Sending:", transactionData);
+
+            const response = await axios.post(
+                API,
+                transactionData,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            console.log("SUCCESS:", response.data);
 
             alert("Transaction Added Successfully");
 
@@ -74,10 +92,14 @@ function Dashboard() {
 
         } catch (error) {
 
-            console.log(error.response);
+            console.log("POST ERROR:", error);
+
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+            }
 
             alert("Error adding transaction");
-
         }
     };
 
@@ -122,6 +144,7 @@ function Dashboard() {
     ];
 
     return (
+
         <div className="dashboard">
 
             <h1 className="heading">MoneyFlow Dashboard</h1>
@@ -151,6 +174,7 @@ function Dashboard() {
             <div className="chart-container">
 
                 <div className="chart-box">
+
                     <h2>Income vs Expense</h2>
 
                     <ResponsiveContainer width="100%" height={300}>
@@ -165,10 +189,12 @@ function Dashboard() {
                             >
 
                                 {pieData.map((entry, index) => (
+
                                     <Cell
                                         key={index}
                                         fill={COLORS[index % COLORS.length]}
                                     />
+
                                 ))}
 
                             </Pie>
@@ -234,19 +260,23 @@ function Dashboard() {
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                 >
+
                     <option value="income">Income</option>
                     <option value="expense">Expense</option>
+
                 </select>
 
                 <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                 >
+
                     <option>Salary</option>
                     <option>Rent</option>
                     <option>Shopping</option>
                     <option>Food</option>
                     <option>Investment</option>
+
                 </select>
 
                 <button onClick={addTransaction}>
