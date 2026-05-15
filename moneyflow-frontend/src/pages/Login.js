@@ -1,15 +1,138 @@
-@PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody User loginUser) {
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-    User user = userRepository.findByEmail(loginUser.getEmail());
+const API = "https://moneyflow-production-1e66.up.railway.app/api/auth";
 
-    if (user == null) {
-        return ResponseEntity.status(401).body("User not found");
-    }
+function Login() {
 
-    if (!user.getPassword().equals(loginUser.getPassword())) {
-        return ResponseEntity.status(401).body("Invalid password");
-    }
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
 
-    return ResponseEntity.ok("Login Success");
+    const navigate = useNavigate();
+
+    const register = async () => {
+
+        if (!name || !email || !password) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        try {
+
+            const response = await axios.post(
+                `${API}/register`,
+                {
+                    name,
+                    email,
+                    password,
+                }
+            );
+
+            if (response.data) {
+
+                alert("Registered Successfully");
+
+                setName("");
+                setEmail("");
+                setPassword("");
+
+            }
+
+        } catch (e) {
+
+            console.log(e);
+
+            alert("Registration Failed");
+
+        }
+    };
+
+    const login = async () => {
+
+        if (!email || !password) {
+            alert("Please enter email and password");
+            return;
+        }
+
+        try {
+
+            const response = await axios.post(
+                `${API}/login`,
+                {
+                    email,
+                    password,
+                }
+            );
+
+            if (response.data) {
+
+                localStorage.setItem("user", email);
+
+                alert("Login Successful");
+
+                navigate("/dashboard");
+
+            } else {
+
+                alert("Invalid Credentials");
+
+            }
+
+        } catch (e) {
+
+            console.log(e);
+
+            alert("Wrong Email or Password");
+
+        }
+    };
+
+    return (
+
+        <div className="login-page">
+
+            <div className="login-card">
+
+                <h1>MoneyFlow</h1>
+
+                <p>Smart Finance Management</p>
+
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button onClick={register}>
+                    Register
+                </button>
+
+                <button onClick={login}>
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+    );
 }
+
+export default Login;
