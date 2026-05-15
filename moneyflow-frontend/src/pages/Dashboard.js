@@ -40,29 +40,32 @@ function Dashboard() {
 
     const fetchTransactions = async () => {
         try {
+
             const res = await axios.get(API);
+
             setTransactions(res.data);
+
         } catch (error) {
+
             console.log(error);
+
         }
     };
 
     const addTransaction = async () => {
+
         try {
 
             const newTransaction = {
-                title,
+                title: title,
                 amount: parseFloat(amount),
-                type,
-                category
+                type: type,
+                category: category
             };
 
-            await axios.post(
-                "https://moneyflow-production-1e66.up.railway.app/api/transactions",
-                newTransaction
-            );
+            await axios.post(API, newTransaction);
 
-            alert("Transaction Added");
+            alert("Transaction Added Successfully");
 
             fetchTransactions();
 
@@ -71,13 +74,15 @@ function Dashboard() {
 
         } catch (error) {
 
-            console.log(error);
+            console.log(error.response);
 
             alert("Error adding transaction");
+
         }
     };
 
     const deleteTransaction = async (id) => {
+
         try {
 
             await axios.delete(`${API}/${id}`);
@@ -85,7 +90,9 @@ function Dashboard() {
             fetchTransactions();
 
         } catch (error) {
+
             console.log(error);
+
         }
     };
 
@@ -147,6 +154,7 @@ function Dashboard() {
                     <h2>Income vs Expense</h2>
 
                     <ResponsiveContainer width="100%" height={300}>
+
                         <PieChart>
 
                             <Pie
@@ -168,13 +176,17 @@ function Dashboard() {
                             <Tooltip />
 
                         </PieChart>
+
                     </ResponsiveContainer>
+
                 </div>
 
                 <div className="chart-box">
+
                     <h2>Monthly Overview</h2>
 
                     <ResponsiveContainer width="100%" height={300}>
+
                         <LineChart data={chartData}>
 
                             <CartesianGrid strokeDasharray="3 3" />
@@ -193,7 +205,9 @@ function Dashboard() {
                             />
 
                         </LineChart>
+
                     </ResponsiveContainer>
+
                 </div>
 
             </div>
@@ -246,14 +260,18 @@ function Dashboard() {
                 <h2>Transactions</h2>
 
                 {transactions.map((t) => (
+
                     <div
                         key={t.id}
                         className={`transaction ${t.type}`}
                     >
 
                         <div>
+
                             <h3>{t.title}</h3>
+
                             <p>{t.category}</p>
+
                         </div>
 
                         <div className="right">
@@ -270,6 +288,7 @@ function Dashboard() {
                         </div>
 
                     </div>
+
                 ))}
 
             </div>
