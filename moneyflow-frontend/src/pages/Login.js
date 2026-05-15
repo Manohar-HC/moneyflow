@@ -5,50 +5,43 @@ import "./Login.css";
 
 const API = "https://moneyflow-production-1e66.up.railway.app/api/auth";
 
-function Login() {
+const login = async () => {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    if (!email || !password) {
+        alert("Enter email and password");
+        return;
+    }
 
-    const navigate = useNavigate();
+    try {
 
-    const login = async () => {
-
-        if (email.trim() === "" || password.trim() === "") {
-
-            alert("Enter Email and Password");
-
-            return;
-        }
-
-        try {
-
-            const response = await axios.post(
-                `${API}/login`,
-                {
-                    email: email,
-                    password: password,
-                }
-            );
-
-            if (response.status === 200) {
-
-                localStorage.setItem("user", email);
-
-                alert("Login Success");
-
-                navigate("/dashboard");
-
+        const response = await axios.post(
+            `${API}/login`,
+            {
+                email,
+                password,
             }
+        );
 
-        } catch (error) {
+        if (response.status === 200 && response.data.email) {
 
-            console.log(error);
+            localStorage.setItem("user", response.data.email);
 
-            alert("Invalid Email or Password");
+            navigate("/dashboard");
+
+        } else {
+
+            alert("Invalid Login");
 
         }
-    };
+
+    } catch (e) {
+
+        console.log(e);
+
+        alert("Wrong Email or Password");
+
+    }
+};
 
     return (
 
