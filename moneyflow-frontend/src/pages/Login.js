@@ -9,51 +9,15 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
 
     const navigate = useNavigate();
 
-    const register = async () => {
-
-        if (!name || !email || !password) {
-            alert("Please fill all fields");
-            return;
-        }
-
-        try {
-
-            const response = await axios.post(
-                `${API}/register`,
-                {
-                    name,
-                    email,
-                    password,
-                }
-            );
-
-            if (response.data) {
-
-                alert("Registered Successfully");
-
-                setName("");
-                setEmail("");
-                setPassword("");
-
-            }
-
-        } catch (e) {
-
-            console.log(e);
-
-            alert("Registration Failed");
-
-        }
-    };
-
     const login = async () => {
 
-        if (!email || !password) {
-            alert("Please enter email and password");
+        if (email.trim() === "" || password.trim() === "") {
+
+            alert("Enter Email and Password");
+
             return;
         }
 
@@ -62,30 +26,26 @@ function Login() {
             const response = await axios.post(
                 `${API}/login`,
                 {
-                    email,
-                    password,
+                    email: email,
+                    password: password,
                 }
             );
 
-            if (response.data) {
+            if (response.status === 200) {
 
                 localStorage.setItem("user", email);
 
-                alert("Login Successful");
+                alert("Login Success");
 
                 navigate("/dashboard");
 
-            } else {
-
-                alert("Invalid Credentials");
-
             }
 
-        } catch (e) {
+        } catch (error) {
 
-            console.log(e);
+            console.log(error);
 
-            alert("Wrong Email or Password");
+            alert("Invalid Email or Password");
 
         }
     };
@@ -96,16 +56,7 @@ function Login() {
 
             <div className="login-card">
 
-                <h1>MoneyFlow</h1>
-
-                <p>Smart Finance Management</p>
-
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
+                <h1>MoneyFlow Login</h1>
 
                 <input
                     type="email"
@@ -120,10 +71,6 @@ function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-
-                <button onClick={register}>
-                    Register
-                </button>
 
                 <button onClick={login}>
                     Login
