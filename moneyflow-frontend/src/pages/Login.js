@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const API = "https://moneyflow-production-74de.up.railway.app/api/auth";
+const API = "https://moneyflow-production-1e66.up.railway.app/api/auth";
 
 function Login() {
 

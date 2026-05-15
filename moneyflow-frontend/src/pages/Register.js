@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API = "https://moneyflow-production-74de.up.railway.app/api/auth";
+const API = "https://moneyflow-production-1e66.up.railway.app/api/auth";
 
 function Register() {
 

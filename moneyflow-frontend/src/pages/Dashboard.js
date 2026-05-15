@@ -25,7 +25,7 @@ import "./Dashboard.css";
 
 function Dashboard() {
 
-    const API = "https://moneyflow-production-74de.up.railway.app/api/transactions";
+    const API = "https://moneyflow-production-1e66.up.railway.app/api/transactions";
 
     const [transactions, setTransactions] = useState([]);
 
