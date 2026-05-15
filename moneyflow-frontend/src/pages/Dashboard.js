@@ -57,9 +57,10 @@ function Dashboard() {
                 category
             };
 
-            console.log("Sending:", newTransaction);
-
-            await axios.post(API, newTransaction);
+            await axios.post(
+                "https://moneyflow-production-1e66.up.railway.app/api/transactions",
+                newTransaction
+            );
 
             alert("Transaction Added");
 
@@ -71,11 +72,6 @@ function Dashboard() {
         } catch (error) {
 
             console.log(error);
-
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-            }
 
             alert("Error adding transaction");
         }
