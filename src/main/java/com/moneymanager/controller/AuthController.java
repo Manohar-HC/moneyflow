@@ -3,12 +3,11 @@ package com.moneymanager.controller;
 import com.moneymanager.model.User;
 import com.moneymanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
 public class AuthController {
 
@@ -16,21 +15,33 @@ public class AuthController {
     private UserRepository userRepo;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userRepo.save(user);
+    public ResponseEntity<?> register(@RequestBody User user) {
+
+        User existingUser = userRepo.findByEmail(user.getEmail());
+
+        if (existingUser != null) {
+            return ResponseEntity.badRequest().body("Email already exists");
+        }
+
+        userRepo.save(user);
+
+        return ResponseEntity.ok("Registered Successfully");
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
 
-        Optional<User> foundUser =
-                userRepo.findByEmailAndPassword(
-                        user.getEmail(),
-                        user.getPassword()
-                );
-
-        return foundUser.orElseThrow(
-                () -> new RuntimeException("Invalid credentials")
+        User foundUser = userRepo.findByEmailAndPassword(
+                user.getEmail(),
+                user.getPassword()
         );
+
+        if (foundUser == null) {
+            return ResponseEntity
+                    .status(401)
+                    .body("Invalid email or password");
+        }
+
+        return ResponseEntity.ok(foundUser);
     }
 }
