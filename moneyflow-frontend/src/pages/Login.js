@@ -5,43 +5,52 @@ import "./Login.css";
 
 const API = "https://moneyflow-production-1e66.up.railway.app/api/auth";
 
-const login = async () => {
+function Login() {
 
-    if (!email || !password) {
-        alert("Enter email and password");
-        return;
-    }
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    try {
+    const navigate = useNavigate();
 
-        const response = await axios.post(
-            `${API}/login`,
-            {
-                email,
-                password,
-            }
-        );
+    const login = async () => {
 
-        if (response.status === 200 && response.data.email) {
+        if (email.trim() === "" || password.trim() === "") {
 
-            localStorage.setItem("user", response.data.email);
+            alert("Please Enter Email and Password");
 
-            navigate("/dashboard");
-
-        } else {
-
-            alert("Invalid Login");
-
+            return;
         }
 
-    } catch (e) {
+        try {
 
-        console.log(e);
+            const response = await axios.post(
+                `${API}/login`,
+                {
+                    email: email,
+                    password: password,
+                }
+            );
 
-        alert("Wrong Email or Password");
+            console.log(response.data);
 
-    }
-};
+            if (response.status === 200) {
+
+                localStorage.setItem("user", response.data.email);
+
+                alert("Login Successful");
+
+                navigate("/dashboard");
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert("Invalid Email or Password");
+
+        }
+    };
 
     return (
 
@@ -49,18 +58,20 @@ const login = async () => {
 
             <div className="login-card">
 
-                <h1>MoneyFlow Login</h1>
+                <h1>MoneyFlow</h1>
+
+                <p>Smart Finance Management</p>
 
                 <input
                     type="email"
-                    placeholder="Email"
+                    placeholder="Enter Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="Enter Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
