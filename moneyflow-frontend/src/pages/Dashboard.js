@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 import {
+    BarChart,
+    Bar,
+    Legend,
     PieChart,
     Pie,
     Cell,
@@ -189,7 +192,26 @@ function Dashboard() {
     ];
 
     const COLORS = ["#6C63FF", "#FF6584"];
+    const categoryData = [];
 
+    transactions.forEach((t) => {
+
+        const existing = categoryData.find(
+            (c) => c.category === t.category
+        );
+
+        if (existing) {
+
+            existing.amount += t.amount;
+
+        } else {
+
+            categoryData.push({
+                category: t.category,
+                amount: t.amount,
+            });
+        }
+    });
     const chartData = [
         { month: "Jan", value: income * 0.3 },
         { month: "Feb", value: income * 0.5 },
@@ -307,8 +329,37 @@ function Dashboard() {
                             </PieChart>
 
                         </ResponsiveContainer>
+                        <div className="chart-box">
 
+                            <h2>Category Analytics</h2>
+
+                            <ResponsiveContainer width="100%" height={300}>
+
+                                <BarChart data={categoryData}>
+
+                                    <CartesianGrid strokeDasharray="3 3" />
+
+                                    <XAxis dataKey="category" />
+
+                                    <YAxis />
+
+                                    <Tooltip />
+
+                                    <Legend />
+
+                                    <Bar
+                                        dataKey="amount"
+                                        fill="#6C63FF"
+                                        radius={[10,10,0,0]}
+                                    />
+
+                                </BarChart>
+
+                            </ResponsiveContainer>
+
+                        </div>
                     </div>
+
 
                     <div className="chart-box">
 
