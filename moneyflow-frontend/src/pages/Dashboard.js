@@ -36,9 +36,11 @@ function Dashboard() {
 
     useEffect(() => {
 
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = localStorage.getItem("user");
 
-        if (!user) {
+        console.log("USER:", user);
+
+        if (user === null) {
 
             window.location.href = "/";
 

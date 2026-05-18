@@ -18,9 +18,7 @@ function Login() {
             return;
         }
 
-        localStorage.setItem("user", JSON.stringify({
-            email: email
-        }));
+        localStorage.setItem("user", email);
 
         alert("Login Success");
 
