@@ -19,6 +19,7 @@ import {
     FaArrowUp,
     FaArrowDown,
     FaTrash,
+    FaEdit,
 } from "react-icons/fa";
 
 import "./Dashboard.css";
@@ -33,6 +34,8 @@ function Dashboard() {
     const [amount, setAmount] = useState("");
     const [type, setType] = useState("income");
     const [category, setCategory] = useState("Salary");
+    const [editId, setEditId] = useState(null);
+
 
     useEffect(() => {
 
@@ -73,21 +76,40 @@ function Dashboard() {
                 category: category,
             };
 
-            console.log("Sending:", transactionData);
+            let response;
 
-            const response = await axios.post(
-                API,
-                transactionData,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+            if (editId) {
+
+                response = await axios.put(
+                    `${API}/${editId}`,
+                    transactionData,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                alert("Transaction Updated");
+
+                setEditId(null);
+
+            } else {
+
+                response = await axios.post(
+                    API,
+                    transactionData,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                alert("Transaction Added Successfully");
+            }
 
             console.log("SUCCESS:", response.data);
-
-            alert("Transaction Added Successfully");
 
             fetchTransactions();
 
@@ -101,6 +123,20 @@ function Dashboard() {
             alert("Error adding transaction");
         }
     };
+    const editTransaction = (transaction) => {
+
+        setTitle(transaction.title);
+
+        setAmount(transaction.amount);
+
+        setType(transaction.type);
+
+        setCategory(transaction.category);
+
+        setEditId(transaction.id);
+    };
+
+
 
     const deleteTransaction = async (id) => {
 
@@ -301,7 +337,7 @@ function Dashboard() {
                 </select>
 
                 <button onClick={addTransaction}>
-                    Add Transaction
+                    {editId ? "Update Transaction" : "Add Transaction"}
                 </button>
 
             </div>
@@ -331,9 +367,9 @@ function Dashboard() {
                                 {t.type === "income" ? "+" : "-"}₹ {t.amount}
                             </h3>
 
-                            <FaTrash
+                            <FaEdit
                                 className="delete"
-                                onClick={() => deleteTransaction(t.id)}
+                                onClick={() => editTransaction(t)}
                             />
 
                         </div>
