@@ -215,7 +215,15 @@ function Dashboard() {
                 </ul>
 
             </div>
+            <div className="mobile-navbar">
 
+                <h2>MoneyFlow</h2>
+
+                <button onClick={logout}>
+                    Logout
+                </button>
+
+            </div>
             <div className="dashboard">
 
                 <h1 className="heading">MoneyFlow Dashboard</h1>
