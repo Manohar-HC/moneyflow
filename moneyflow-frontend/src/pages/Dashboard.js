@@ -1,3 +1,17 @@
+useEffect(() => {
+
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+        window.location.href = "/";
+    }
+
+    fetchTransactions();
+
+}, []);
+
+
+
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -142,7 +156,13 @@ function Dashboard() {
         { month: "Apr", value: income * 0.9 },
         { month: "May", value: balance },
     ];
-
+    const logout = () => {
+        localStorage.removeItem("user");
+        window.location.href = "/";
+    };
+    <button onClick={logout}>
+        Logout
+    </button>
     return (
 
         <div className="dashboard">
