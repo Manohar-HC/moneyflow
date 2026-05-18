@@ -36,17 +36,6 @@ function Dashboard() {
 
     useEffect(() => {
 
-        const user = localStorage.getItem("user");
-
-        console.log("USER:", user);
-
-        if (user === null) {
-
-            window.location.href = "/";
-
-            return;
-        }
-
         fetchTransactions();
 
     }, []);
