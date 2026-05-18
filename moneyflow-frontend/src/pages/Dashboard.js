@@ -200,233 +200,235 @@ function Dashboard() {
 
     return (
 
-        <div className="dashboard">
+        <div className="app-layout">
 
-            <h1 className="heading">MoneyFlow Dashboard</h1>
+            <div className="sidebar">
 
-            <button
-                onClick={logout}
-                style={{
-                    padding: "10px 20px",
-                    marginBottom: "20px",
-                    background: "#ff4d4f",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "8px",
-                    cursor: "pointer"
-                }}
-            >
-                Logout
-            </button>
+                <h2>MoneyFlow</h2>
 
-            <motion.div
-                className="cards"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-            >
-
-                <div className="card">
-                    <FaWallet className="icon" />
-                    <h3>Balance</h3>
-                    <p>₹ {balance}</p>
-                </div>
-
-                <div className="card income">
-                    <FaArrowUp className="icon" />
-                    <h3>Income</h3>
-                    <p>₹ {income}</p>
-                </div>
-
-                <div className="card expense">
-                    <FaArrowDown className="icon" />
-                    <h3>Expense</h3>
-                    <p>₹ {expense}</p>
-                </div>
-
-            </motion.div>
-
-
-            <div className="cards">
-
-                <div className="card">
-                    <h3>Total Transactions</h3>
-                    <p>{totalTransactions}</p>
-                </div>
-
-                <div className="card income">
-                    <h3>Savings Rate</h3>
-                    <p>{savingsRate}%</p>
-                </div>
-
-                <div className="card expense">
-                    <h3>Expense Ratio</h3>
-                    <p>{expensePercentage}%</p>
-                </div>
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Analytics</li>
+                    <li>Transactions</li>
+                    <li>Reports</li>
+                    <li onClick={logout}>Logout</li>
+                </ul>
 
             </div>
 
-            <div className="chart-container">
+            <div className="dashboard">
 
-                <div className="chart-box">
+                <h1 className="heading">MoneyFlow Dashboard</h1>
 
-                    <h2>Income vs Expense</h2>
-
-                    <ResponsiveContainer width="100%" height={300}>
-
-                        <PieChart>
-
-                            <Pie
-                                data={pieData}
-                                dataKey="value"
-                                outerRadius={100}
-                                label
-                            >
-
-                                {pieData.map((entry, index) => (
-
-                                    <Cell
-                                        key={index}
-                                        fill={COLORS[index % COLORS.length]}
-                                    />
-
-                                ))}
-
-                            </Pie>
-
-                            <Tooltip />
-
-                        </PieChart>
-
-                    </ResponsiveContainer>
-
-                </div>
-
-                <div className="chart-box">
-
-                    <h2>Monthly Overview</h2>
-
-                    <ResponsiveContainer width="100%" height={300}>
-
-                        <LineChart data={chartData}>
-
-                            <CartesianGrid strokeDasharray="3 3" />
-
-                            <XAxis dataKey="month" />
-
-                            <YAxis />
-
-                            <Tooltip />
-
-                            <Line
-                                type="monotone"
-                                dataKey="value"
-                                stroke="#6C63FF"
-                                strokeWidth={3}
-                            />
-
-                        </LineChart>
-
-                    </ResponsiveContainer>
-
-                </div>
-
-            </div>
-
-            <div className="form-box">
-
-                <h2>Add Transaction</h2>
-
-                <input
-                    type="text"
-                    placeholder="Transaction Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-
-                <input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                />
-
-                <select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
+                <motion.div
+                    className="cards"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
                 >
 
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
+                    <div className="card">
+                        <FaWallet className="icon" />
+                        <h3>Balance</h3>
+                        <p>₹ {balance}</p>
+                    </div>
 
-                </select>
+                    <div className="card income">
+                        <FaArrowUp className="icon" />
+                        <h3>Income</h3>
+                        <p>₹ {income}</p>
+                    </div>
 
-                <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                >
+                    <div className="card expense">
+                        <FaArrowDown className="icon" />
+                        <h3>Expense</h3>
+                        <p>₹ {expense}</p>
+                    </div>
 
-                    <option>Salary</option>
-                    <option>Rent</option>
-                    <option>Shopping</option>
-                    <option>Food</option>
-                    <option>Investment</option>
+                </motion.div>
 
-                </select>
+                <div className="cards">
 
-                <button onClick={addTransaction}>
-                    {editId ? "Update Transaction" : "Add Transaction"}
-                </button>
+                    <div className="card">
+                        <h3>Total Transactions</h3>
+                        <p>{totalTransactions}</p>
+                    </div>
 
-            </div>
+                    <div className="card income">
+                        <h3>Savings Rate</h3>
+                        <p>{savingsRate}%</p>
+                    </div>
 
-            <div className="transaction-box">
+                    <div className="card expense">
+                        <h3>Expense Ratio</h3>
+                        <p>{expensePercentage}%</p>
+                    </div>
 
-                <h2>Transactions</h2>
+                </div>
 
-                {transactions.map((t) => (
+                <div className="chart-container">
 
-                    <motion.div
-                        key={t.id}
-                        className={`transaction ${t.type}`}
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
+                    <div className="chart-box">
+
+                        <h2>Income vs Expense</h2>
+
+                        <ResponsiveContainer width="100%" height={300}>
+
+                            <PieChart>
+
+                                <Pie
+                                    data={pieData}
+                                    dataKey="value"
+                                    outerRadius={100}
+                                    label
+                                >
+
+                                    {pieData.map((entry, index) => (
+
+                                        <Cell
+                                            key={index}
+                                            fill={COLORS[index % COLORS.length]}
+                                        />
+
+                                    ))}
+
+                                </Pie>
+
+                                <Tooltip />
+
+                            </PieChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
+
+                    <div className="chart-box">
+
+                        <h2>Monthly Overview</h2>
+
+                        <ResponsiveContainer width="100%" height={300}>
+
+                            <LineChart data={chartData}>
+
+                                <CartesianGrid strokeDasharray="3 3" />
+
+                                <XAxis dataKey="month" />
+
+                                <YAxis />
+
+                                <Tooltip />
+
+                                <Line
+                                    type="monotone"
+                                    dataKey="value"
+                                    stroke="#6C63FF"
+                                    strokeWidth={3}
+                                />
+
+                            </LineChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
+
+                </div>
+
+                <div className="form-box">
+
+                    <h2>Add Transaction</h2>
+
+                    <input
+                        type="text"
+                        placeholder="Transaction Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+
+                    <input
+                        type="number"
+                        placeholder="Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
+
+                    <select
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
                     >
 
-                        <div>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
 
-                            <h3>{t.title}</h3>
+                    </select>
 
-                            <p>{t.category}</p>
+                    <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                    >
 
-                        </div>
+                        <option>Salary</option>
+                        <option>Rent</option>
+                        <option>Shopping</option>
+                        <option>Food</option>
+                        <option>Investment</option>
 
-                        <div className="right">
+                    </select>
 
-                            <h3>
-                                {t.type === "income" ? "+" : "-"}₹ {t.amount}
-                            </h3>
+                    <button onClick={addTransaction}>
+                        {editId ? "Update Transaction" : "Add Transaction"}
+                    </button>
 
-                            <FaEdit
-                                className="delete"
-                                onClick={() => editTransaction(t)}
-                                style={{
-                                    marginRight: "15px",
-                                    cursor: "pointer",
-                                    color: "#6C63FF"
-                                }}
-                            />
+                </div>
 
-                            <FaTrash
-                                className="delete"
-                                onClick={() => deleteTransaction(t.id)}
-                            />
+                <div className="transaction-box">
 
-                        </div>
+                    <h2>Transactions</h2>
 
-                    </motion.div>
+                    {transactions.map((t) => (
 
-                ))}
+                        <motion.div
+                            key={t.id}
+                            className={`transaction ${t.type}`}
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                        >
+
+                            <div>
+
+                                <h3>{t.title}</h3>
+
+                                <p>{t.category}</p>
+
+                            </div>
+
+                            <div className="right">
+
+                                <h3>
+                                    {t.type === "income" ? "+" : "-"}₹ {t.amount}
+                                </h3>
+
+                                <FaEdit
+                                    className="delete"
+                                    onClick={() => editTransaction(t)}
+                                    style={{
+                                        marginRight: "15px",
+                                        cursor: "pointer",
+                                        color: "#6C63FF"
+                                    }}
+                                />
+
+                                <FaTrash
+                                    className="delete"
+                                    onClick={() => deleteTransaction(t.id)}
+                                />
+
+                            </div>
+
+                        </motion.div>
+
+                    ))}
+
+                </div>
 
             </div>
 
