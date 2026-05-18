@@ -9,30 +9,22 @@ function Login() {
 
     const navigate = useNavigate();
 
-    const login = async () => {
+    const login = () => {
 
-        if (!email || !password) {
+        if (email.trim() === "" || password.trim() === "") {
 
             alert("Enter Email and Password");
 
             return;
         }
 
-        try {
+        localStorage.setItem("user", JSON.stringify({
+            email: email
+        }));
 
-            localStorage.setItem("user", email);
+        alert("Login Success");
 
-            alert("Login Success");
-
-            navigate("/dashboard");
-
-        } catch (error) {
-
-            console.log(error);
-
-            alert("Login Failed");
-
-        }
+        navigate("/dashboard");
     };
 
     return (
