@@ -23,6 +23,7 @@ import {
 } from "react-icons/fa";
 
 import "./Dashboard.css";
+import { motion } from "framer-motion";
 
 function Dashboard() {
 
@@ -206,7 +207,12 @@ function Dashboard() {
                 Logout
             </button>
 
-            <div className="cards">
+            <motion.div
+                className="cards"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+            >
 
                 <div className="card">
                     <FaWallet className="icon" />
@@ -226,7 +232,7 @@ function Dashboard() {
                     <p>₹ {expense}</p>
                 </div>
 
-            </div>
+            </motion.div>
 
             <div className="chart-container">
 
@@ -348,9 +354,11 @@ function Dashboard() {
 
                 {transactions.map((t) => (
 
-                    <div
+                    <motion.div
                         key={t.id}
                         className={`transaction ${t.type}`}
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
                     >
 
                         <div>
@@ -384,7 +392,7 @@ function Dashboard() {
 
                         </div>
 
-                    </div>
+                    </motion.div>
 
                 ))}
 
