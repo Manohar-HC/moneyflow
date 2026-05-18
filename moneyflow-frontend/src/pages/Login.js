@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-
-const API = "https://moneyflow-production-1e66.up.railway.app/api/auth";
 
 function Login() {
 
@@ -14,40 +11,26 @@ function Login() {
 
     const login = async () => {
 
-        if (email.trim() === "" || password.trim() === "") {
+        if (!email || !password) {
 
-            alert("Please Enter Email and Password");
+            alert("Enter Email and Password");
 
             return;
         }
 
         try {
 
-            const response = await axios.post(
-                `${API}/login`,
-                {
-                    email: email,
-                    password: password,
-                }
-            );
+            localStorage.setItem("user", email);
 
-            console.log(response.data);
+            alert("Login Success");
 
-            if (response.status === 200) {
-
-                localStorage.setItem("user", response.data.email);
-
-                alert("Login Successful");
-
-                navigate("/dashboard");
-
-            }
+            navigate("/dashboard");
 
         } catch (error) {
 
             console.log(error);
 
-            alert("Invalid Email or Password");
+            alert("Login Failed");
 
         }
     };
