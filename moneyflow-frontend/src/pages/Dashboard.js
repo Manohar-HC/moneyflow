@@ -370,6 +370,16 @@ function Dashboard() {
                             <FaEdit
                                 className="delete"
                                 onClick={() => editTransaction(t)}
+                                style={{
+                                    marginRight: "15px",
+                                    cursor: "pointer",
+                                    color: "#6C63FF"
+                                }}
+                            />
+
+                            <FaTrash
+                                className="delete"
+                                onClick={() => deleteTransaction(t.id)}
                             />
 
                         </div>
