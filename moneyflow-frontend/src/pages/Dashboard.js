@@ -1,17 +1,3 @@
-useEffect(() => {
-
-    const user = localStorage.getItem("user");
-
-    if (!user) {
-        window.location.href = "/";
-    }
-
-    fetchTransactions();
-
-}, []);
-
-
-
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -49,7 +35,18 @@ function Dashboard() {
     const [category, setCategory] = useState("Salary");
 
     useEffect(() => {
+
+        const user = localStorage.getItem("user");
+
+        if (!user) {
+
+            window.location.href = "/";
+
+            return;
+        }
+
         fetchTransactions();
+
     }, []);
 
     const fetchTransactions = async () => {
@@ -70,7 +67,9 @@ function Dashboard() {
     const addTransaction = async () => {
 
         if (!title || !amount) {
+
             alert("Please fill all fields");
+
             return;
         }
 
@@ -108,11 +107,6 @@ function Dashboard() {
 
             console.log("POST ERROR:", error);
 
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-            }
-
             alert("Error adding transaction");
         }
     };
@@ -130,6 +124,13 @@ function Dashboard() {
             console.log(error);
 
         }
+    };
+
+    const logout = () => {
+
+        localStorage.removeItem("user");
+
+        window.location.href = "/";
     };
 
     const income = transactions
@@ -156,18 +157,27 @@ function Dashboard() {
         { month: "Apr", value: income * 0.9 },
         { month: "May", value: balance },
     ];
-    const logout = () => {
-        localStorage.removeItem("user");
-        window.location.href = "/";
-    };
-    <button onClick={logout}>
-        Logout
-    </button>
+
     return (
 
         <div className="dashboard">
 
             <h1 className="heading">MoneyFlow Dashboard</h1>
+
+            <button
+                onClick={logout}
+                style={{
+                    padding: "10px 20px",
+                    marginBottom: "20px",
+                    background: "#ff4d4f",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    cursor: "pointer"
+                }}
+            >
+                Logout
+            </button>
 
             <div className="cards">
 
