@@ -170,6 +170,18 @@ function Dashboard() {
         .reduce((acc, t) => acc + t.amount, 0);
 
     const balance = income - expense;
+    const savingsRate =
+        income > 0
+            ? ((balance / income) * 100).toFixed(1)
+            : 0;
+
+    const totalTransactions = transactions.length;
+
+    const expensePercentage =
+        income > 0
+            ? ((expense / income) * 100).toFixed(1)
+            : 0;
+
 
     const pieData = [
         { name: "Income", value: income },
@@ -233,6 +245,26 @@ function Dashboard() {
                 </div>
 
             </motion.div>
+
+
+            <div className="cards">
+
+                <div className="card">
+                    <h3>Total Transactions</h3>
+                    <p>{totalTransactions}</p>
+                </div>
+
+                <div className="card income">
+                    <h3>Savings Rate</h3>
+                    <p>{savingsRate}%</p>
+                </div>
+
+                <div className="card expense">
+                    <h3>Expense Ratio</h3>
+                    <p>{expensePercentage}%</p>
+                </div>
+
+            </div>
 
             <div className="chart-container">
 
