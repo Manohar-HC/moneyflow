@@ -438,7 +438,45 @@ function Dashboard() {
                     </button>
 
                 </div>
+                <div className="chart-box">
 
+                    <h2>Recent Activity</h2>
+
+                    {transactions.slice(0, 5).map((t) => (
+
+                        <div
+                            key={t.id}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: "15px",
+                                padding: "12px",
+                                borderRadius: "12px",
+                                background: "rgba(255,255,255,0.05)"
+                            }}
+                        >
+
+                            <div>
+                                <strong>{t.title}</strong>
+                                <p>{t.category}</p>
+                            </div>
+
+                            <div
+                                style={{
+                                    color:
+                                        t.type === "income"
+                                            ? "#00ffae"
+                                            : "#ff4d6d"
+                                }}
+                            >
+                                ₹ {t.amount}
+                            </div>
+
+                        </div>
+
+                    ))}
+
+                </div>
                 <div className="transaction-box">
 
                     <h2>Transactions</h2>
