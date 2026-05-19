@@ -31,7 +31,7 @@ import {
 
 import "./Dashboard.css";
 import { motion } from "framer-motion";
-const [darkMode, setDarkMode] = useState(true);
+
 function Dashboard() {
 
     const API = "https://moneyflow-production-1e66.up.railway.app/api/transactions";
@@ -44,7 +44,9 @@ function Dashboard() {
     const [category, setCategory] = useState("Salary");
     const [editId, setEditId] = useState(null);
 
-
+    const [search, setSearch] = useState("");
+    const [filterType, setFilterType] = useState("all");
+    const [darkMode, setDarkMode] = useState(true);
     useEffect(() => {
 
         fetchTransactions();
@@ -206,7 +208,18 @@ function Dashboard() {
             ? ((expense / income) * 100).toFixed(1)
             : 0;
 
+    const filteredTransactions = transactions.filter((t) => {
 
+        const matchesSearch =
+            t.title.toLowerCase().includes(search.toLowerCase());
+
+        const matchesType =
+            filterType === "all"
+                ? true
+                : t.type === filterType;
+
+        return matchesSearch && matchesType;
+    });
     const pieData = [
         { name: "Income", value: income },
         { name: "Expense", value: expense },
@@ -379,38 +392,38 @@ function Dashboard() {
                             </PieChart>
 
                         </ResponsiveContainer>
-                        <div className="chart-box">
 
-                            <h2>Category Analytics</h2>
-
-                            <ResponsiveContainer width="100%" height={300}>
-
-                                <BarChart data={categoryData}>
-
-                                    <CartesianGrid strokeDasharray="3 3" />
-
-                                    <XAxis dataKey="category" />
-
-                                    <YAxis />
-
-                                    <Tooltip />
-
-                                    <Legend />
-
-                                    <Bar
-                                        dataKey="amount"
-                                        fill="#6C63FF"
-                                        radius={[10,10,0,0]}
-                                    />
-
-                                </BarChart>
-
-                            </ResponsiveContainer>
-
-                        </div>
                     </div>
 
+                    <div className="chart-box">
 
+                        <h2>Category Analytics</h2>
+
+                        <ResponsiveContainer width="100%" height={300}>
+
+                            <BarChart data={categoryData}>
+
+                                <CartesianGrid strokeDasharray="3 3" />
+
+                                <XAxis dataKey="category" />
+
+                                <YAxis />
+
+                                <Tooltip />
+
+                                <Legend />
+
+                                <Bar
+                                    dataKey="amount"
+                                    fill="#6C63FF"
+                                    radius={[10,10,0,0]}
+                                />
+
+                            </BarChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
                     <div className="chart-box">
 
                         <h2>Monthly Overview</h2>
