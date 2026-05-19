@@ -1,4 +1,8 @@
-import axios from "axios";
+
+import { saveAs } from "file-saver";
+
+import axios
+    from "axios";
 import React, { useState, useEffect } from "react";
 
 import {
@@ -27,7 +31,7 @@ import {
 
 import "./Dashboard.css";
 import { motion } from "framer-motion";
-
+const [darkMode, setDarkMode] = useState(true);
 function Dashboard() {
 
     const API = "https://moneyflow-production-1e66.up.railway.app/api/transactions";
@@ -156,7 +160,24 @@ function Dashboard() {
 
         }
     };
+    const exportCSV = () => {
 
+        const headers =
+            "Title,Amount,Type,Category\n";
+
+        const rows = transactions.map((t) =>
+            `${t.title},${t.amount},${t.type},${t.category}`
+        ).join("\n");
+
+        const csv = headers + rows;
+
+        const blob = new Blob(
+            [csv],
+            { type: "text/csv;charset=utf-8;" }
+        );
+
+        saveAs(blob, "transactions.csv");
+    };
     const logout = () => {
 
         localStorage.removeItem("user");
@@ -222,7 +243,7 @@ function Dashboard() {
 
     return (
 
-        <div className="app-layout">
+        <div className={darkMode ? "app-layout dark" : "app-layout light"}>
 
             <div className="sidebar">
 
@@ -248,8 +269,37 @@ function Dashboard() {
             </div>
             <div className="dashboard">
 
-                <h1 className="heading">MoneyFlow Dashboard</h1>
 
+                <h1 className="heading">MoneyFlow Dashboard</h1>
+                <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    style={{
+                        padding: "12px 18px",
+                        background: darkMode ? "#ffffff" : "#111827",
+                        color: darkMode ? "#111827" : "#ffffff",
+                        border: "none",
+                        borderRadius: "12px",
+                        marginBottom: "20px",
+                        cursor: "pointer",
+                        marginRight: "15px"
+                    }}
+                >
+                    {darkMode ? "Light Mode" : "Dark Mode"}
+                </button>
+                <button
+                    onClick={exportCSV}
+                    style={{
+                        padding: "12px 18px",
+                        background: "#6C63FF",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "12px",
+                        marginBottom: "20px",
+                        cursor: "pointer"
+                    }}
+                >
+                    Export CSV
+                </button>
                 <motion.div
                     className="cards"
                     initial={{ opacity: 0, y: 50 }}
@@ -477,11 +527,32 @@ function Dashboard() {
                     ))}
 
                 </div>
+                <div className="form-box">
+
+                    <input
+                        type="text"
+                        placeholder="Search Transaction"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+
+                    <select
+                        value={filterType}
+                        onChange={(e) => setFilterType(e.target.value)}
+                    >
+
+                        <option value="all">All</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+
+                    </select>
+
+                </div>
                 <div className="transaction-box">
 
                     <h2>Transactions</h2>
 
-                    {transactions.map((t) => (
+                    {filteredTransactions.map((t) => (
 
                         <motion.div
                             key={t.id}
