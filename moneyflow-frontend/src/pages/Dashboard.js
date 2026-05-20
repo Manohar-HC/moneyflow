@@ -953,18 +953,7 @@ function Dashboard() {
 
                         </select>
 
-                        <select
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                        >
-
-                            <option>Salary</option>
-                            <option>Rent</option>
-                            <option>Shopping</option>
-                            <option>Food</option>
-                            <option>Investment</option>
-
-                        </select>
+                        value={category}
 
                         <button onClick={addTransaction}>
                             {editId ? "Update Transaction" : "Add Transaction"}
