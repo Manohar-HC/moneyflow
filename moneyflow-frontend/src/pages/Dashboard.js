@@ -227,7 +227,15 @@ function Dashboard() {
         income > 0
             ? ((expense / income) * 100).toFixed(1)
             : 0;
+    const savingsInsight =
+        savingsRate > 50
+            ? "Excellent savings performance this month 🚀"
+            : "Try reducing unnecessary expenses ⚠️";
 
+    const expenseInsight =
+        expense > income
+            ? "Warning: Expenses exceed income ⚠️"
+            : "Your spending is under control ✅";
     const filteredTransactions = transactions.filter((t) => {
 
         const matchesSearch =
@@ -894,7 +902,29 @@ function Dashboard() {
                         </div>
 
                     </div>
+                    {/* AI INSIGHTS */}
 
+                    <div className="ai-insights">
+
+                        <h2>AI Financial Insights</h2>
+
+                        <div className="insight-card">
+
+                            <h3>💰 Savings Insight</h3>
+
+                            <p>{savingsInsight}</p>
+
+                        </div>
+
+                        <div className="insight-card">
+
+                            <h3>📊 Expense Insight</h3>
+
+                            <p>{expenseInsight}</p>
+
+                        </div>
+
+                    </div>
                     <div className="form-box">
 
                         <h2>Add Transaction</h2>
