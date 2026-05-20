@@ -95,7 +95,7 @@ body,
 
 .dashboard {
     flex: 1;
-    width: 100%;
+    width: calc(100% - 240px);
     margin-left: 240px;
     padding: 30px;
     overflow-x: hidden;
@@ -161,7 +161,7 @@ body,
 }
 
 .card {
-    flex: 1;
+    flex: 1 1 300px;
     min-width: 220px;
     padding: 25px;
     border-radius: 22px;
@@ -348,7 +348,16 @@ body,
    MOBILE
 ========================= */
 
+
 @media (max-width: 768px) {
+
+    body,
+    html,
+    #root,
+    .app-layout {
+        width: 100%;
+        overflow-x: hidden;
+    }
 
     .sidebar {
         display: none;
@@ -358,19 +367,21 @@ body,
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 20px;
+        padding: 15px;
         background: rgba(15, 23, 42, 0.95);
         position: sticky;
         top: 0;
         z-index: 1000;
+        width: 100%;
     }
 
     .mobile-navbar h2 {
         color: white;
+        font-size: 22px;
     }
 
     .mobile-navbar button {
-        padding: 10px 16px;
+        padding: 10px 14px;
         border: none;
         border-radius: 10px;
         background: #ff4d4f;
@@ -379,20 +390,43 @@ body,
 
     .dashboard {
         width: 100%;
-        max-width: 100vw;
-        margin-left: 0;
-        padding: 15px;
+        margin-left: 0 !important;
+        padding: 12px;
+        overflow-x: hidden;
+    }
+
+    .hero-section {
+        width: 100%;
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 20px;
+    }
+
+    .hero-title {
+        font-size: 30px;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+        line-height: 1.5;
     }
 
     .cards,
     .chart-container,
-    .hero-section,
     .form-box {
+        display: flex;
         flex-direction: column;
+        width: 100%;
     }
 
     .card,
-    .chart-box,
+    .chart-box {
+        width: 100%;
+        min-width: 100%;
+    }
+
     .form-box input,
     .form-box select,
     .form-box button {
@@ -402,31 +436,29 @@ body,
     .transaction {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        width: 100%;
+        gap: 12px;
     }
 
     .right {
         width: 100%;
+        display: flex;
         justify-content: space-between;
-    }
-
-    .hero-title {
-        font-size: 30px;
-    }
-
-    .heading {
-        font-size: 28px;
     }
 
     .fab-button {
         width: 55px;
         height: 55px;
         font-size: 28px;
-        bottom: 20px;
         right: 20px;
+        bottom: 20px;
+    }
+
+    .time-box {
+        width: 100%;
+        margin-top: 15px;
     }
 }
-
 /* =========================
    SMALL DEVICES
 ========================= */
