@@ -13,14 +13,18 @@ body,
     background: #0f172a;
 }
 
+body {
+    overflow-x: hidden !important;
+}
+
 /* =========================
    APP LAYOUT
 ========================= */
 
 .app-layout {
     display: flex;
-    width: 100%;
     min-height: 100vh;
+    width: 100%;
     overflow-x: hidden;
 }
 
@@ -95,9 +99,8 @@ body,
 
 .dashboard {
     flex: 1;
-    width: calc(100% - 240px);
-    margin-left: 240px;
     padding: 30px;
+    margin-left: 240px;
     overflow-x: hidden;
 }
 
@@ -154,15 +157,14 @@ body,
 ========================= */
 
 .cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    flex-wrap: wrap;
     margin-bottom: 25px;
 }
 
 .card {
-    flex: 1 1 300px;
-    min-width: 220px;
+    min-width: 0;
     padding: 25px;
     border-radius: 22px;
     background: rgba(255,255,255,0.08);
@@ -200,13 +202,12 @@ body,
 ========================= */
 
 .chart-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
-    flex-wrap: wrap;
 }
 
 .chart-box {
-    flex: 1;
     min-width: 0;
     width: 100%;
     padding: 25px;
@@ -335,7 +336,7 @@ body,
     }
 
     .chart-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 
     .hero-section {
@@ -348,16 +349,7 @@ body,
    MOBILE
 ========================= */
 
-
 @media (max-width: 768px) {
-
-    body,
-    html,
-    #root,
-    .app-layout {
-        width: 100%;
-        overflow-x: hidden;
-    }
 
     .sidebar {
         display: none;
@@ -372,7 +364,6 @@ body,
         position: sticky;
         top: 0;
         z-index: 1000;
-        width: 100%;
     }
 
     .mobile-navbar h2 {
@@ -389,10 +380,8 @@ body,
     }
 
     .dashboard {
-        width: 100%;
         margin-left: 0 !important;
-        padding: 12px;
-        overflow-x: hidden;
+        padding: 15px;
     }
 
     .hero-section {
@@ -400,7 +389,6 @@ body,
         padding: 20px;
         flex-direction: column;
         align-items: flex-start;
-        border-radius: 20px;
     }
 
     .hero-title {
@@ -416,15 +404,15 @@ body,
     .cards,
     .chart-container,
     .form-box {
-        display: flex;
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        display: grid;
         width: 100%;
     }
 
     .card,
     .chart-box {
         width: 100%;
-        min-width: 100%;
+        min-width: 0;
     }
 
     .form-box input,
@@ -459,6 +447,7 @@ body,
         margin-top: 15px;
     }
 }
+
 /* =========================
    SMALL DEVICES
 ========================= */
