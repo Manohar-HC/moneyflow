@@ -1,3 +1,10 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -89,4 +96,20 @@ body {
     backdrop-filter: blur(20px);
     font-weight: bold;
     font-size: 18px;
+}
+.app-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.dashboard {
+    flex: 1;
+    width: 100%;
+    margin-left: 260px;
+    padding: 30px;
+    color: white;
+    box-sizing: border-box;
 }
