@@ -58,3 +58,35 @@ body {
 .login-card button:hover {
     background: #574fff;
 }
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 24px;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color: white;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.hero-title {
+    font-size: 42px;
+    margin: 0;
+}
+
+.hero-subtitle {
+    opacity: 0.9;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.hero-badge {
+    padding: 14px 22px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(20px);
+    font-weight: bold;
+    font-size: 18px;
+}

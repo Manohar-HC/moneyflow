@@ -1,4 +1,5 @@
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { saveAs } from "file-saver";
 
 import axios
@@ -47,9 +48,24 @@ function Dashboard() {
     const [search, setSearch] = useState("");
     const [filterType, setFilterType] = useState("all");
     const [darkMode, setDarkMode] = useState(true);
+    const [activeMenu, setActiveMenu] = useState("Dashboard");
+    const [currentTime, setCurrentTime] = useState(
+        new Date()
+    );
     useEffect(() => {
 
         fetchTransactions();
+
+    }, []);
+    useEffect(() => {
+
+        const timer = setInterval(() => {
+
+            setCurrentTime(new Date());
+
+        }, 1000);
+
+        return () => clearInterval(timer);
 
     }, []);
 
@@ -72,7 +88,7 @@ function Dashboard() {
 
         if (!title || !amount) {
 
-            alert("Please fill all fields");
+            toast.warning("Please fill all fields");
 
             return;
         }
@@ -100,7 +116,7 @@ function Dashboard() {
                     }
                 );
 
-                alert("Transaction Updated");
+                toast.success("Transaction Updated");
 
                 setEditId(null);
 
@@ -116,7 +132,7 @@ function Dashboard() {
                     }
                 );
 
-                alert("Transaction Added Successfully");
+                toast.success("Transaction Added Successfully");
             }
 
             console.log("SUCCESS:", response.data);
@@ -130,7 +146,7 @@ function Dashboard() {
 
             console.log("POST ERROR:", error);
 
-            alert("Error adding transaction");
+            toast.error("Error adding transaction");
         }
     };
     const editTransaction = (transaction) => {
@@ -154,12 +170,15 @@ function Dashboard() {
 
             await axios.delete(`${API}/${id}`);
 
+            toast.success("Transaction Deleted");
+
             fetchTransactions();
 
         } catch (error) {
 
             console.log(error);
 
+            toast.error("Delete Failed");
         }
     };
     const exportCSV = () => {
@@ -263,11 +282,53 @@ function Dashboard() {
                 <h2>MoneyFlow</h2>
 
                 <ul>
-                    <li>Dashboard</li>
-                    <li>Analytics</li>
-                    <li>Transactions</li>
-                    <li>Reports</li>
-                    <li onClick={logout}>Logout</li>
+                    <li
+                        className={
+                            activeMenu === "Dashboard"
+                                ? "active-menu"
+                                : ""
+                        }
+                        onClick={() => setActiveMenu("Dashboard")}
+                    >
+                        Dashboard
+                    </li>
+
+                    <li
+                        className={
+                            activeMenu === "Analytics"
+                                ? "active-menu"
+                                : ""
+                        }
+                        onClick={() => setActiveMenu("Analytics")}
+                    >
+                        Analytics
+                    </li>
+
+                    <li
+                        className={
+                            activeMenu === "Transactions"
+                                ? "active-menu"
+                                : ""
+                        }
+                        onClick={() => setActiveMenu("Transactions")}
+                    >
+                        Transactions
+                    </li>
+
+                    <li
+                        className={
+                            activeMenu === "Reports"
+                                ? "active-menu"
+                                : ""
+                        }
+                        onClick={() => setActiveMenu("Reports")}
+                    >
+                        Reports
+                    </li>
+
+                    <li onClick={logout}>
+                        Logout
+                    </li>
                 </ul>
 
             </div>
@@ -284,6 +345,47 @@ function Dashboard() {
 
 
                 <h1 className="heading">MoneyFlow Dashboard</h1>
+                <div className="hero-section">
+
+                    <div>
+
+                        <h1 className="hero-title">
+                            Welcome Back 👋
+                        </h1>
+
+                        <p className="hero-subtitle">
+                            Track your money smarter with AI-powered insights.
+                        </p>
+
+                    </div>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "10px"
+                        }}
+                    >
+
+                        <div className="hero-badge">
+                            💎 Premium Analytics
+                        </div>
+
+                        <div className="time-box">
+
+                            <h2>
+                                {currentTime.toLocaleTimeString()}
+                            </h2>
+
+                            <p>
+                                {currentTime.toDateString()}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
                 <button
                     onClick={() => setDarkMode(!darkMode)}
                     style={{
@@ -343,6 +445,42 @@ function Dashboard() {
                 <div className="cards">
 
                     <div className="card">
+                        <div className="cards">
+
+                            <div
+                                className="card"
+                                style={{
+                                    background:
+                                        "linear-gradient(135deg,#667eea,#764ba2)"
+                                }}
+                            >
+                                <h3>Total Balance</h3>
+                                <p>₹ {balance}</p>
+                            </div>
+
+                            <div
+                                className="card"
+                                style={{
+                                    background:
+                                        "linear-gradient(135deg,#11998e,#38ef7d)"
+                                }}
+                            >
+                                <h3>Total Income</h3>
+                                <p>₹ {income}</p>
+                            </div>
+
+                            <div
+                                className="card"
+                                style={{
+                                    background:
+                                        "linear-gradient(135deg,#fc466b,#3f5efb)"
+                                }}
+                            >
+                                <h3>Total Expense</h3>
+                                <p>₹ {expense}</p>
+                            </div>
+
+                        </div>
                         <h3>Total Transactions</h3>
                         <p>{totalTransactions}</p>
                     </div>
@@ -561,55 +699,170 @@ function Dashboard() {
                     </select>
 
                 </div>
+                <div className="cards">
+
+                    <div
+                        className="card"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => window.scrollTo(0, 0)}
+                    >
+                        <h3>➕ Add Expense</h3>
+                        <p>Quick Add</p>
+                    </div>
+
+                    <div
+                        className="card"
+                        style={{ cursor: "pointer" }}
+                        onClick={exportCSV}
+                    >
+                        <h3>📤 Export Data</h3>
+                        <p>Download CSV</p>
+                    </div>
+
+                    <div
+                        className="card"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setDarkMode(!darkMode)}
+                    >
+                        <h3>🌙 Theme</h3>
+                        <p>Switch Mode</p>
+                    </div>
+
+                </div>
+                <div className="chart-box">
+
+                    <h2>Financial Summary</h2>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "15px",
+                            marginTop: "20px"
+                        }}
+                    >
+
+                        <div
+                            style={{
+                                padding: "15px",
+                                borderRadius: "12px",
+                                background: "rgba(255,255,255,0.06)"
+                            }}
+                        >
+                            💰 You saved <strong>{savingsRate}%</strong> of your income.
+                        </div>
+
+                        <div
+                            style={{
+                                padding: "15px",
+                                borderRadius: "12px",
+                                background: "rgba(255,255,255,0.06)"
+                            }}
+                        >
+                            📈 Total Income: <strong>₹ {income}</strong>
+                        </div>
+
+                        <div
+                            style={{
+                                padding: "15px",
+                                borderRadius: "12px",
+                                background: "rgba(255,255,255,0.06)"
+                            }}
+                        >
+                            📉 Total Expense: <strong>₹ {expense}</strong>
+                        </div>
+
+                        <div
+                            style={{
+                                padding: "15px",
+                                borderRadius: "12px",
+                                background: "rgba(255,255,255,0.06)"
+                            }}
+                        >
+                            🧾 Total Transactions:
+                            <strong> {totalTransactions}</strong>
+                        </div>
+
+                    </div>
+
+                </div>
                 <div className="transaction-box">
 
                     <h2>Transactions</h2>
 
-                    {filteredTransactions.map((t) => (
+                    {filteredTransactions.length === 0 ? (
 
-                        <motion.div
-                            key={t.id}
-                            className={`transaction ${t.type}`}
-                            initial={{ opacity: 0, x: -30 }}
-                            animate={{ opacity: 1, x: 0 }}
+                        <div
+                            style={{
+                                textAlign: "center",
+                                padding: "50px",
+                                opacity: 0.7
+                            }}
                         >
 
-                            <div>
+                            <h2>No Transactions Yet</h2>
 
-                                <h3>{t.title}</h3>
+                            <p>
+                                Start adding your income and expenses 🚀
+                            </p>
 
-                                <p>{t.category}</p>
+                        </div>
 
-                            </div>
+                    ) : (
 
-                            <div className="right">
+                        filteredTransactions.map((t) => (
 
-                                <h3>
-                                    {t.type === "income" ? "+" : "-"}₹ {t.amount}
-                                </h3>
+                            <motion.div
+                                key={t.id}
+                                className={`transaction ${t.type}`}
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                            >
 
-                                <FaEdit
-                                    className="delete"
-                                    onClick={() => editTransaction(t)}
-                                    style={{
-                                        marginRight: "15px",
-                                        cursor: "pointer",
-                                        color: "#6C63FF"
-                                    }}
-                                />
+                                <div>
 
-                                <FaTrash
-                                    className="delete"
-                                    onClick={() => deleteTransaction(t.id)}
-                                />
+                                    <h3>{t.title}</h3>
 
-                            </div>
+                                    <p>{t.category}</p>
 
-                        </motion.div>
+                                </div>
 
-                    ))}
+                                <div className="right">
+
+                                    <h3>
+                                        {t.type === "income" ? "+" : "-"}₹ {t.amount}
+                                    </h3>
+
+                                    <FaEdit
+                                        className="delete"
+                                        onClick={() => editTransaction(t)}
+                                        style={{
+                                            marginRight: "15px",
+                                            cursor: "pointer",
+                                            color: "#6C63FF"
+                                        }}
+                                    />
+
+                                    <FaTrash
+                                        className="delete"
+                                        onClick={() => deleteTransaction(t.id)}
+                                    />
+
+                                </div>
+
+                            </motion.div>
+
+                        ))
+
+                    )}
 
                 </div>
+
+                <ToastContainer
+                    position="top-right"
+                    autoClose={2000}
+                    theme="dark"
+                />
 
             </div>
 
