@@ -184,63 +184,7 @@ body {
     font-size: 20px;
 }
 
-@media(max-width:768px){
 
-    .sidebar {
-        display: none;
-    }
-
-    .dashboard {
-        margin-left: 0;
-        padding: 15px;
-    }
-
-    .cards,
-    .chart-container {
-        flex-direction: column;
-    }
-
-    .chart-box {
-        min-width: 100%;
-    }
-
-    .form-box {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-.mobile-navbar {
-    display: none;
-}
-
-@media(max-width:768px){
-
-    .mobile-navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-        background: rgba(15, 23, 42, 0.95);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        backdrop-filter: blur(20px);
-    }
-
-    .mobile-navbar h2 {
-        color: white;
-        margin: 0;
-    }
-
-    .mobile-navbar button {
-        padding: 10px 16px;
-        border: none;
-        border-radius: 10px;
-        background: #ff4d4f;
-        color: white;
-        cursor: pointer;
-    }
-}
 
 .dark {
     background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -281,4 +225,209 @@ body {
     box-shadow: 0 0 20px rgba(108,99,255,0.5);
 
     transform: translateX(8px);
+}
+/* =========================
+   TABLET RESPONSIVE
+========================= */
+
+@media (max-width: 1024px) {
+
+    .dashboard {
+        margin-left: 220px;
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chart-container {
+        flex-direction: column;
+    }
+
+    .chart-box {
+        min-width: 100%;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .mobile-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: rgba(15, 23, 42, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(20px);
+    }
+
+    .dashboard {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .heading {
+        font-size: 28px;
+    }
+
+    .hero-title {
+        font-size: 30px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chart-box {
+        width: 100%;
+        min-width: 100%;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+
+    .form-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-box input,
+    .form-box select,
+    .form-box button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .transaction {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .right {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .time-box {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* =========================
+   SMALL MOBILE DEVICES
+========================= */
+
+@media (max-width: 480px) {
+
+    .dashboard {
+        padding: 10px;
+    }
+
+    .hero-title {
+        font-size: 24px;
+    }
+
+    .heading {
+        font-size: 24px;
+    }
+
+    .card h3 {
+        font-size: 18px;
+    }
+
+    .card p {
+        font-size: 22px;
+    }
+
+    .transaction h3 {
+        font-size: 16px;
+    }
+
+    .transaction p {
+        font-size: 13px;
+    }
+
+    .mobile-navbar h2 {
+        font-size: 22px;
+    }
+
+    .mobile-navbar button {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+}
+.fab-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(
+            135deg,
+            #6C63FF,
+            #8B5CF6
+    );
+    color: white;
+    font-size: 34px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(108,99,255,0.5);
+    z-index: 999;
+    transition: 0.3s;
+}
+
+.fab-button:hover {
+    transform: scale(1.1) rotate(90deg);
+}
+
+@media (max-width: 768px) {
+
+    .fab-button {
+        width: 55px;
+        height: 55px;
+        font-size: 28px;
+        bottom: 20px;
+        right: 20px;
+    }
 }

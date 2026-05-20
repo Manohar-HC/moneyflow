@@ -857,7 +857,15 @@ function Dashboard() {
                     )}
 
                 </div>
-
+                <button
+                    className="fab-button"
+                    onClick={() => window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    })}
+                >
+                    +
+                </button>
                 <ToastContainer
                     position="top-right"
                     autoClose={2000}
