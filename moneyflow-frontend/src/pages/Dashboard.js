@@ -1133,6 +1133,40 @@ function Dashboard() {
 
                     </div>
                     <button
+                </div>
+
+                {/* MOBILE BOTTOM NAVBAR */}
+
+                <div className="bottom-nav">
+
+                    <div className="bottom-item active-bottom">
+                        <FaHome />
+                        <span>Home</span>
+                    </div>
+
+                    <div className="bottom-item">
+                        <FaChartPie />
+                        <span>Analytics</span>
+                    </div>
+
+                    <div className="bottom-add">
+                        +
+                    </div>
+
+                    <div className="bottom-item">
+                        <FaFileAlt />
+                        <span>Reports</span>
+                    </div>
+
+                    <div className="bottom-item">
+                        <FaUser />
+                        <span>Profile</span>
+                    </div>
+
+                </div>
+
+                <button
+                    className="fab-button"
                         className="fab-button"
                         onClick={() => window.scrollTo({
                             top: 0,
