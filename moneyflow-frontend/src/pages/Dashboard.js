@@ -1,3 +1,4 @@
+import CountUp from "react-countup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { saveAs } from "file-saver";
@@ -700,19 +701,40 @@ function Dashboard() {
                         <div className="card">
                             <FaWallet className="icon" />
                             <h3>Balance</h3>
-                            <p>₹ {balance}</p>
+                            <p>
+                                ₹
+                                <CountUp
+                                    end={balance}
+                                    duration={2}
+                                    separator=","
+                                />
+                            </p>
                         </div>
 
                         <div className="card income">
                             <FaArrowUp className="icon" />
                             <h3>Income</h3>
-                            <p>₹ {income}</p>
+                            <p>
+                                ₹
+                                <CountUp
+                                    end={income}
+                                    duration={2}
+                                    separator=","
+                                />
+                            </p>
                         </div>
 
                         <div className="card expense">
                             <FaArrowDown className="icon" />
                             <h3>Expense</h3>
-                            <p>₹ {expense}</p>
+                            <p>
+                                ₹
+                                <CountUp
+                                    end={expense}
+                                    duration={2}
+                                    separator=","
+                                />
+                            </p>
                         </div>
 
                     </motion.div>
@@ -757,7 +779,12 @@ function Dashboard() {
 
                             </div>
                             <h3>Total Transactions</h3>
-                            <p>{totalTransactions}</p>
+                            <p>
+                                <CountUp
+                                    end={totalTransactions}
+                                    duration={2}
+                                />
+                            </p>
                         </div>
 
                         <div className="card income">
@@ -1132,7 +1159,7 @@ function Dashboard() {
                         )}
 
                     </div>
-                    <button
+
                 </div>
 
                 {/* MOBILE BOTTOM NAVBAR */}
@@ -1181,7 +1208,7 @@ function Dashboard() {
                         theme="dark"
                     />
 
-                </div>
+
 
             </div>
         );

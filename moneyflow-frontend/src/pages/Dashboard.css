@@ -164,19 +164,44 @@ body {
 }
 
 .card {
+
     min-width: 0;
+
     padding: 25px;
-    border-radius: 22px;
-    background: rgba(255,255,255,0.08);
+
+    border-radius: 24px;
+
+    background: linear-gradient(
+            135deg,
+            rgba(255,255,255,0.12),
+            rgba(255,255,255,0.05)
+    );
+
     backdrop-filter: blur(20px);
+
     border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    transition: 0.3s;
+
+    box-shadow:
+            0 8px 32px rgba(0,0,0,0.3),
+            inset 0 1px 1px rgba(255,255,255,0.1);
+
+    transition: all 0.4s ease;
+
     cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
 }
 
 .card:hover {
-    transform: translateY(-8px) scale(1.02);
+
+    transform: translateY(-10px) scale(1.03);
+
+    box-shadow:
+            0 20px 40px rgba(108,99,255,0.35),
+            0 0 20px rgba(108,99,255,0.25);
+
 }
 
 .card h3 {
@@ -469,4 +494,34 @@ body {
     .card p {
         font-size: 22px;
     }
+}
+.card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -50%;
+
+    left: -50%;
+
+    width: 200%;
+
+    height: 200%;
+
+    background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.08),
+            transparent
+    );
+
+    transform: rotate(25deg);
+
+    transition: 0.6s;
+}
+
+.card:hover::before {
+
+    left: 100%;
 }
